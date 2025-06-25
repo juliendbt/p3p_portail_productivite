@@ -16,6 +16,11 @@ if (strpos($request_uri, 'goal') !== false) {
     exit;
 }
 
+if (strpos($request_uri, 'github') !== false) {
+    include_once __DIR__ . '/controllers/GitHubController.php';
+    exit;
+}
+
 
 // On pourra ajouter d'autres routes ici plus tard (tâches, objectifs, etc.)
 echo json_encode(["message" => "Bienvenue sur l'API P3P."]);

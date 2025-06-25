@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Google Calendar - P3P</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="manifest" href="manifest.json">
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("sw.js");
+    }
+    </script>
+
+</head>
+<body class="container">
+  <h2>Événements Google Calendar</h2>
+  <div id="calendarEvents" class="mt-3"></div>
+
+  <script>
+    const CLIENT_ID = "388126798512-vhts4c63gm7ovvssgki499sh80e223n9.apps.googleusercontent.com";
+    const REDIRECT_URI = "http://localhost/p3p_portail_productivite/frontend/calendar.html";
+    const SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
+    const TOKEN_KEY = "google_token";
+
+    // Redirection OAuth
+    function authorizeGoogle() {
+        const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=token&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}`;
+        window.location.href = url;
+    }
+
+    // Lecture token et récupération événements
+    function initCalendar() {
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = params.get("access_token");
+
+        if (accessToken) {
+            localStorage.setItem(TOKEN_KEY, accessToken);
+        }
+
+        const token = localStorage.getItem(TOKEN_KEY);
+        if (!token) {
+            authorizeGoogle();
+            return;
+        }
+
+        fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=5&orderBy=startTime&singleEvents=true", {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const div = document.getElementById("calendarEvents");
+            if (!data.items) {
+                div.innerHTML = "<p>Aucun événement trouvé.</p>";
+                return;
+            }
+            data.items.forEach(evt => {
+                const date = evt.start.dateTime || evt.start.date;
+                div.innerHTML += `<p><strong>${date}</strong> — ${evt.summary}</p>`;
+            });
+        });
+    }
+
+    window.onload = initCalendar;
+  </script>
+</body>
+</html>

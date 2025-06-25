@@ -26,9 +26,15 @@ async function login() {
         })
     });
     const data = await res.json();
-    alert(data.message);
-    if (data.id) {
-        localStorage.setItem("utilisateur", JSON.stringify(data));
-        window.location.href = "dashboard.html";
-    }
+        alert(data.message);
+        if (data.id) {
+            localStorage.setItem("utilisateur", JSON.stringify({
+                id: data.id,
+                nom: data.nom,
+                email: data.email,
+                role: data.role // ⚡️
+            }));
+            window.location.href = "dashboard.html";
+        }
+
 }

@@ -7,23 +7,25 @@ class User {
     public $nom;
     public $email;
     public $mot_de_passe;
+    public $role = 'user';
 
     public function __construct($db) {
         $this->conn = $db;
     }
 
     public function inscrire() {
-        $query = "INSERT INTO " . $this->table_name . " SET nom=:nom, email=:email, mot_de_passe=:mot_de_passe";
+            $query = "INSERT INTO " . $this->table_name . " SET nom=:nom, email=:email, mot_de_passe=:mot_de_passe, role=:role";
+            $stmt = $this->conn->prepare($query);
+            $this->mot_de_passe = password_hash($this->mot_de_passe, PASSWORD_DEFAULT);
 
-        $stmt = $this->conn->prepare($query);
-        $this->mot_de_passe = password_hash($this->mot_de_passe, PASSWORD_DEFAULT);
+            $stmt->bindParam(":nom", $this->nom);
+            $stmt->bindParam(":email", $this->email);
+            $stmt->bindParam(":mot_de_passe", $this->mot_de_passe);
+            $stmt->bindParam(":role", $this->role);
 
-        $stmt->bindParam(":nom", $this->nom);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":mot_de_passe", $this->mot_de_passe);
+            return $stmt->execute();
+        }
 
-        return $stmt->execute();
-    }
 
     public function connexion() {
         $query = "SELECT * FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
@@ -36,9 +38,11 @@ class User {
             if (password_verify($this->mot_de_passe, $row['mot_de_passe'])) {
                 $this->id = $row['id'];
                 $this->nom = $row['nom'];
+                $this->role = $row['role']; // ➜ AJOUT ICI
                 return true;
             }
         }
+
         return false;
     }
 }

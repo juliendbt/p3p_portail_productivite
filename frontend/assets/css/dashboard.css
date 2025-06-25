@@ -7,12 +7,15 @@ body {
 }
 
 main {
-  background: #ffffff;
+  background: #fff;
   padding: 2rem;
   border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
   margin-bottom: 3rem;
   transition: background 0.3s;
+  max-width: 950px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h2 {
@@ -21,7 +24,7 @@ h2 {
   margin-bottom: 1rem;
 }
 
-h4 {
+h4, h5 {
   color: #343a40;
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -33,6 +36,9 @@ h4 {
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: #e3f2fd;
 }
 
 form#formTache {
@@ -51,10 +57,10 @@ form#formTache select {
 
 #tableTaches {
   margin-top: 1rem;
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
   transition: background-color 0.3s;
 }
 
@@ -64,15 +70,72 @@ form#formTache select {
   text-align: center;
 }
 
+#tableTaches th {
+  background: #f8f9fa;
+  color: #343a40;
+  font-weight: 500;
+  font-size: 1.05rem;
+}
+
+#filtreStatut {
+  min-width: 180px;
+  margin-bottom: 0.5rem;
+  margin-left: auto;
+  margin-right: 0;
+  display: block;
+}
+
+.progress {
+  height: 22px;
+  background-color: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.7rem;
+}
+
+.progress-bar {
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.5s cubic-bezier(.23,1.36,.64,1);
+}
+
+.alert {
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 1.08rem;
+}
+
+#nextTask {
+  margin-bottom: 1.2rem;
+}
+
+#dailyPerformance {
+  margin-bottom: 0.5rem;
+}
+
 #chartStat {
   max-width: 600px;
   margin: 2rem auto;
   display: block;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.06);
+  padding: 12px 0;
 }
 
 button.btn-danger {
   font-weight: bold;
   letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+  main { padding: 0.5rem; }
+  #chartStat { max-width: 98vw; }
+  form#formTache { padding: 0.5rem; }
 }
 
 /* Dark mode styles */
@@ -82,26 +145,25 @@ body.bg-dark {
 }
 
 .bg-dark main {
-  background-color: #1f1f1f;
+  background-color: #181c1f;
 }
 
-.bg-dark h2,
-.bg-dark h4 {
-  color: #f8f9fa;
-}
-
-.bg-dark #weather {
-  background-color: #212529;
+.bg-dark h2, .bg-dark h4, .bg-dark h5 {
   color: #e9ecef;
 }
 
+.bg-dark #weather {
+  background-color: #22304a;
+  color: #f8f9fa;
+}
+
 .bg-dark form#formTache {
-  background-color: #2c2c2c;
+  background-color: #23272b;
   border-color: #444;
 }
 
 .bg-dark #tableTaches {
-  background-color: #2c2c2c;
+  background-color: #23272b;
 }
 
 .bg-dark .table-bordered th,
@@ -110,16 +172,35 @@ body.bg-dark {
   color: #e9ecef;
 }
 
+.bg-dark #tableTaches th {
+  background: #1a1d21;
+  color: #fafafa;
+}
+
+.bg-dark .progress {
+  background-color: #2a2a2a;
+}
+
+.bg-dark .progress-bar {
+  background-color: #38b6ff !important;
+  color: #1a1d21;
+}
+
+.bg-dark .alert {
+  background-color: #23272b;
+  color: #e3e3e3;
+}
+
 .bg-dark .btn {
   color: #fff;
 }
 
 .bg-dark .btn-outline-primary {
-  border-color: #0d6efd;
-  color: #0d6efd;
+  border-color: #38b6ff;
+  color: #38b6ff;
 }
 
 .bg-dark .btn-outline-primary:hover {
-  background-color: #0d6efd;
-  color: white;
+  background-color: #38b6ff;
+  color: #23272b;
 }

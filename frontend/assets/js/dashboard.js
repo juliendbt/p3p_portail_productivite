@@ -7,41 +7,103 @@ if (!userRaw) {
     const user = JSON.parse(userRaw);
     document.getElementById("nomUtilisateur").innerText = "Bonjour " + user.nom;
 
+    // Afficher la colonne "Utilisateur" dans le tableau si admin
+    if (user.role === "admin") {
+        const thUtilisateur = document.getElementById('thUtilisateur');
+        if (thUtilisateur) thUtilisateur.style.display = '';
+    }
+
+    // --- Ajout sélecteur utilisateur pour admin ---
+    if (user.role === "admin") {
+        document.getElementById('userSelectContainer').style.display = '';
+        fetch('http://localhost/p3p_portail_productivite/backend/index.php/task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'users' })
+        })
+        .then(res => res.json())
+        .then(users => {
+            const select = document.getElementById('selectUtilisateur');
+            select.innerHTML = users.map(u => `<option value="${u.id}">${u.nom} (${u.email})</option>`).join('');
+        });
+    }
+
     const API_URL = "http://localhost/p3p_portail_productivite/backend/index.php/task";
 
     async function chargerTaches() {
+        const filtre = document.getElementById("filtreStatut")?.value || "toutes";
         const res = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "read", id_utilisateur: user.id })
+            body: JSON.stringify({ 
+                action: "read", 
+                id_utilisateur: user.id, 
+                role: user.role 
+            })
         });
         const data = await res.json();
         const tbody = document.querySelector("#tableTaches tbody");
         tbody.innerHTML = "";
-        data.forEach(t => {
+        const dataFiltree = filtre === "toutes" ? data : data.filter(t => t.statut === filtre);
+
+        dataFiltree.forEach(t => {
             tbody.innerHTML += `
             <tr>
                 <td>${t.titre}</td>
                 <td>${t.priorite}</td>
                 <td>${t.statut}</td>
                 <td>${t.date_echeance ?? ''}</td>
+                ${user.role === "admin" ? `<td>${t.nom_utilisateur}</td>` : ""}
                 <td>
                     <button class="btn btn-sm btn-danger" onclick="supprimerTache(${t.id})">Supprimer</button>
                 </td>
             </tr>`;
         });
+
+        // Progression
+        const total = data.length;
+        const done = data.filter(t => t.statut === "terminé").length;
+        const pourcentage = total === 0 ? 0 : Math.round((done / total) * 100);
+        const progressBar = document.getElementById("progressBar");
+        if (progressBar) {
+            progressBar.style.width = pourcentage + "%";
+            progressBar.textContent = `${pourcentage}%`;
+        }
+
+        // Performance quotidienne
+        const today = new Date().toISOString().split("T")[0];
+        const todayCreated = data.filter(t => t.date_creation?.startsWith(today)).length;
+        const todayDone = data.filter(t => t.date_creation?.startsWith(today) && t.statut === "terminé").length;
+        const perf = document.getElementById("dailyPerformance");
+        if (perf) {
+            perf.textContent = `Aujourd'hui : ${todayCreated} tâche(s) créée(s), ${todayDone} terminée(s).`;
+        }
+
+        // Ma prochaine tâche
+        const prochaine = data.find(t => t.statut !== "terminé");
+        const next = document.getElementById("nextTask");
+        if (next) {
+            if (prochaine) {
+                next.innerHTML = `<strong>🎯 Prochaine tâche :</strong> ${prochaine.titre} <span class="badge bg-warning text-dark ms-2">${prochaine.priorite}</span>`;
+            } else {
+                next.innerHTML = `<strong>✅ Toutes vos tâches sont terminées !</strong>`;
+            }
+        }
     }
+
+    document.getElementById("filtreStatut")?.addEventListener("change", chargerTaches);
 
     document.getElementById("formTache").addEventListener("submit", async (e) => {
         e.preventDefault();
         const body = {
             action: "create",
-            id_utilisateur: user.id,
             titre: document.getElementById("titre").value,
             description: document.getElementById("description").value,
             priorite: document.getElementById("priorite").value,
             date_echeance: document.getElementById("date_echeance").value,
-            statut: document.getElementById("statut").value
+            statut: document.getElementById("statut").value,
+            id_utilisateur: user.role === "admin" ? document.getElementById("selectUtilisateur").value : user.id,
+            role: user.role
         };
         await fetch(API_URL, {
             method: "POST",
@@ -58,10 +120,11 @@ if (!userRaw) {
         await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "delete", id })
+            body: JSON.stringify({ action: "delete", id, role: user.role, id_utilisateur: user.id })
         });
         chargerTaches();
-        };
+    };
+
 
 
     async function afficherStats() {
@@ -133,7 +196,6 @@ if (!userRaw) {
             </li>`;
         });
     }
-
 
     function notificationTachesUrgentes() {
         const now = new Date();

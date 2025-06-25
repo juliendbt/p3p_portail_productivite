@@ -21,6 +21,7 @@ switch ($data->action) {
         $user->nom = $data->nom ?? '';
         $user->email = $data->email ?? '';
         $user->mot_de_passe = $data->mot_de_passe ?? '';
+        $user->role = $data->role ?? 'user';
 
         if ($user->inscrire()) {
             echo json_encode(["message" => "Inscription réussie."]);
@@ -29,7 +30,7 @@ switch ($data->action) {
         }
         break;
 
-    case 'login':
+    case 'login': // AJOUTE CE BLOC
         $user->email = $data->email ?? '';
         $user->mot_de_passe = $data->mot_de_passe ?? '';
 
@@ -38,7 +39,8 @@ switch ($data->action) {
                 "message" => "Connexion réussie.",
                 "id" => $user->id,
                 "nom" => $user->nom,
-                "email" => $user->email
+                "email" => $user->email,
+                "role" => $user->role
             ]);
         } else {
             echo json_encode(["message" => "Identifiants incorrects."]);
@@ -48,4 +50,5 @@ switch ($data->action) {
     default:
         echo json_encode(["message" => "Action inconnue."]);
 }
+
 ?>

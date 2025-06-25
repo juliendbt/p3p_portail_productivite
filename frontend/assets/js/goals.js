@@ -1,56 +1,98 @@
-const user = JSON.parse(localStorage.getItem("utilisateur"));
-const API_GOAL = "http://localhost/p3p_portail_productivite/backend/index.php/goal";
+const userRaw = localStorage.getItem("utilisateur");
 
-document.getElementById("nomUtilisateur").innerText = "Objectifs de " + user.nom;
+if (!userRaw) {
+    alert("Vous devez être connecté pour accéder à cette page.");
+    window.location.href = "index.html";
+} else {
+    const user = JSON.parse(userRaw);
+    document.getElementById("nomUtilisateur").innerText = "Bonjour " + user.nom;
 
-async function chargerObjectifs() {
-    const res = await fetch(API_GOAL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "read", id_utilisateur: user.id })
+    // Afficher la colonne utilisateur dans le tableau si admin
+    if (user.role === "admin") {
+        const thUtilisateur = document.getElementById('thGoalUtilisateur');
+        if (thUtilisateur) thUtilisateur.style.display = '';
+    }
+
+    // Afficher le sélecteur d’utilisateur si admin
+    if (user.role === "admin") {
+        document.getElementById('goalUserSelectContainer').style.display = '';
+        fetch('http://localhost/p3p_portail_productivite/backend/index.php/goal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'users' })
+        })
+        .then(res => res.json())
+        .then(users => {
+            const select = document.getElementById('goalSelectUtilisateur');
+            select.innerHTML = users.map(u => `<option value="${u.id}">${u.nom} (${u.email})</option>`).join('');
+        });
+    }
+
+    const API_URL = "http://localhost/p3p_portail_productivite/backend/index.php/goal";
+
+    async function chargerObjectifs() {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                action: "read",
+                id_utilisateur: user.id,
+                role: user.role
+            })
+        });
+        const data = await res.json();
+        const tbody = document.querySelector("#tableGoals tbody");
+        tbody.innerHTML = "";
+
+        data.forEach(g => {
+            tbody.innerHTML += `
+            <tr>
+                <td>${g.titre}</td>
+                <td>${g.date_debut ?? ''}</td>
+                <td>${g.date_fin ?? ''}</td>
+                <td>${g.type}</td>
+                <td>${g.statut}</td>
+                ${user.role === "admin" ? `<td>${g.nom_utilisateur}</td>` : ""}
+                <td>
+                    <button class="btn btn-sm btn-danger" onclick="supprimerObjectif(${g.id})">Supprimer</button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    document.getElementById("formGoal").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const body = {
+            action: "create",
+            titre: document.getElementById("goalTitre").value,
+            description: document.getElementById("goalDescription").value,
+            type: document.getElementById("goalType").value,
+            date_debut: document.getElementById("goalDateDebut").value,
+            date_fin: document.getElementById("goalDateFin").value,
+            statut: document.getElementById("goalStatut").value,
+            id_utilisateur: user.role === "admin" ? document.getElementById("goalSelectUtilisateur").value : user.id,
+            role: user.role
+        };
+        await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        document.getElementById("formGoal").reset();
+        document.getElementById("goalTitre").focus();
+        chargerObjectifs();
+        document.getElementById("tableGoals").scrollIntoView({ behavior: "smooth" });
     });
-    const objectifs = await res.json();
-    const tbody = document.querySelector("#tableObjectifs tbody");
-    tbody.innerHTML = "";
-    objectifs.forEach(obj => {
-        tbody.innerHTML += `
-        <tr>
-            <td>${obj.titre}</td>
-            <td>${obj.type}</td>
-            <td>${obj.date_debut}</td>
-            <td>${obj.date_fin}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="supprimerObjectif(${obj.id})">Supprimer</button></td>
-        </tr>`;
-    });
-}
 
-document.getElementById("formObjectif").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const body = {
-        action: "create",
-        id_utilisateur: user.id,
-        titre: document.getElementById("titre").value,
-        type: document.getElementById("type").value,
-        description: document.getElementById("description").value,
-        date_debut: document.getElementById("date_debut").value,
-        date_fin: document.getElementById("date_fin").value
+    window.supprimerObjectif = async function(id) {
+        await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "delete", id, role: user.role, id_utilisateur: user.id })
+        });
+        chargerObjectifs();
     };
-    await fetch(API_GOAL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    });
-    document.getElementById("formObjectif").reset();
-    chargerObjectifs();
-});
 
-async function supprimerObjectif(id) {
-    await fetch(API_GOAL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "delete", id })
-    });
+    // Initialisation
     chargerObjectifs();
 }
-
-chargerObjectifs();

@@ -105,7 +105,7 @@ async function afficherMeteo() {
 }
 
 async function afficherCommits() {
-    const token = "TON_TOKEN_GITHUB";
+    const token = "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";
     const username = "juliendbt";
     const repo = "p3p_portail_productivite";
 

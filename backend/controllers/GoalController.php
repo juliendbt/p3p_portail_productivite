@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '../config/database.php';
-require_once __DIR__ . '../models/Goal.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../models/Goal.php';
+
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");

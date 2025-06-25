@@ -54,14 +54,15 @@ if (!userRaw) {
         document.getElementById("tableTaches").scrollIntoView({ behavior: "smooth" });
     });
 
-    async function supprimerTache(id) {
+    window.supprimerTache = async function(id) {
         await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: "delete", id })
         });
         chargerTaches();
-    }
+        };
+
 
     async function afficherStats() {
         const res = await fetch(API_URL, {

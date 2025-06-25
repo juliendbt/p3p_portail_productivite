@@ -12,50 +12,60 @@
     </script>
 
 </head>
-<body class="container py-4">
-    <h2>Mes Objectifs</h2>
-    <div id="nomUtilisateur" class="mb-3"></div>
+<body>
 
-    <!-- Formulaire objectif -->
-    <form id="formObjectif" class="row g-2">
-        <div class="col-md-6">
-            <input type="text" id="titre" class="form-control" placeholder="Titre de l’objectif" required>
-        </div>
-        <div class="col-md-6">
-            <select id="type" class="form-select">
-                <option value="hebdomadaire">Hebdomadaire</option>
-                <option value="mensuel">Mensuel</option>
-            </select>
-        </div>
-        <div class="col-md-6">
-            <input type="date" id="date_debut" class="form-control" required>
-        </div>
-        <div class="col-md-6">
-            <input type="date" id="date_fin" class="form-control" required>
-        </div>
-        <div class="col-12">
-            <textarea id="description" class="form-control" placeholder="Description..."></textarea>
-        </div>
-        <div class="col-12">
-            <button class="btn btn-primary" type="submit">Ajouter</button>
-        </div>
-    </form>
+    <div id="navbar-container"></div>
 
-    <hr>
-    <h4>Liste des objectifs</h4>
-    <table class="table table-bordered" id="tableObjectifs">
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Type</th>
-                <th>Début</th>
-                <th>Fin</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <main class="container py-4">
+        <h2>Mes Objectifs</h2>
+        <div id="nomUtilisateur" class="mb-3"></div>
 
+        <!-- Formulaire objectif -->
+        <form id="formObjectif" class="row g-2">
+            <div class="col-md-6">
+                <input type="text" id="titre" class="form-control" placeholder="Titre de l’objectif" required>
+            </div>
+            <div class="col-md-6">
+                <select id="type" class="form-select">
+                    <option value="hebdomadaire">Hebdomadaire</option>
+                    <option value="mensuel">Mensuel</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <input type="date" id="date_debut" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <input type="date" id="date_fin" class="form-control" required>
+            </div>
+            <div class="col-12">
+                <textarea id="description" class="form-control" placeholder="Description..."></textarea>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Ajouter</button>
+            </div>
+        </form>
+
+        <hr>
+        <h4>Liste des objectifs</h4>
+        <table class="table table-bordered" id="tableObjectifs">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Type</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
     <script src="assets/js/goals.js"></script>
+<!-- Chargement de la navbar -->
+<div id="navbar-container"></div>
+
+<script src="assets/js/logout.js"></script>
+
+
 </body>
 </html>

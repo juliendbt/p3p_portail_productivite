@@ -12,29 +12,41 @@
     </script>
 
 </head>
-<body class="container mt-5">
-    <h2>Connexion</h2>
-    <div class="mb-3">
-        <input type="email" id="email" placeholder="Email" class="form-control">
-    </div>
-    <div class="mb-3">
-        <input type="password" id="password" placeholder="Mot de passe" class="form-control">
-    </div>
-    <button onclick="login()" class="btn btn-primary">Connexion</button>
+<body>
+    <div id="navbar-container"></div>
 
-    <hr>
-    <h2>Inscription</h2>
-    <div class="mb-3">
-        <input type="text" id="nom" placeholder="Nom" class="form-control">
-    </div>
-    <div class="mb-3">
-        <input type="email" id="email_register" placeholder="Email" class="form-control">
-    </div>
-    <div class="mb-3">
-        <input type="password" id="password_register" placeholder="Mot de passe" class="form-control">
-    </div>
-    <button onclick="register()" class="btn btn-success">S’inscrire</button>
+    <main class="container mt-5">
+        <h2>Connexion</h2>
+        <div class="mb-3">
+            <input type="email" id="email" placeholder="Email" class="form-control">
+        </div>
+        <div class="mb-3">
+            <input type="password" id="password" placeholder="Mot de passe" class="form-control">
+        </div>
+        <button onclick="login()" class="btn btn-primary">Connexion</button>
 
+        <hr>
+        <h2>Inscription</h2>
+        <div class="mb-3">
+            <input type="text" id="nom" placeholder="Nom" class="form-control">
+        </div>
+        <div class="mb-3">
+            <input type="email" id="email_register" placeholder="Email" class="form-control">
+        </div>
+        <div class="mb-3">
+            <input type="password" id="password_register" placeholder="Mot de passe" class="form-control">
+        </div>
+        <button onclick="register()" class="btn btn-success">S’inscrire</button>
+    </main>
     <script src="assets/js/script.js"></script>
+<!-- Chargement de la navbar -->
+<div id="navbar-container"></div>
+
+<script></script>
+
+<script src="assets/js/logout.js"></script>
+
+
+
 </body>
 </html>

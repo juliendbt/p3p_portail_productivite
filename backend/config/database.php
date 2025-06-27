@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = "localhost";
-    private $db_name = "p3p";
-    private $username = "root";
-    private $password = ""; // à adapter
+    private $host = "sql304.infinityfree.com";
+    private $db_name = "if0_39336979_p3p";
+    private $username = "if0_39336979";
+    private $password = "18042002Ss"; // à adapter
     public $conn;
 
     public function getConnection() {

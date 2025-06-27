@@ -28,7 +28,7 @@ if (!userRaw) {
         });
     }
 
-    const API_URL = "https://p3p.infinityfreeapp.com//index.php/task";
+    const API_URL = "https://p3p.infinityfreeapp.com/index.php/task";
 
     async function chargerTaches() {
         const filtre = document.getElementById("filtreStatut")?.value || "toutes";

@@ -25,6 +25,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (logoutBtn) {
           logoutBtn.addEventListener("click", logout);
         }
+
+        checkUnreadMessages(user.id);
+        setInterval(() => checkUnreadMessages(user.id), 3000); // toutes les 3 secondes
       }
     });
 });
+
+function checkUnreadMessages(userId) {
+  fetch(`/p3p_portail_productivite/backend/index.php?action=getUnreadMessages&user_id=${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      const badge = document.getElementById("notif-badge");
+      if (!badge) return;
+      if (data.unread > 0) {
+        badge.innerText = data.unread;
+        badge.style.display = "inline";
+      } else {
+        badge.style.display = "none";
+      }
+    })
+    .catch(err => console.error("Erreur notifications :", err));
+}

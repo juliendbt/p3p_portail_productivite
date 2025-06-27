@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../models/User.php';
 
-
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -30,7 +29,7 @@ switch ($data->action) {
         }
         break;
 
-    case 'login': // AJOUTE CE BLOC
+    case 'login':
         $user->email = $data->email ?? '';
         $user->mot_de_passe = $data->mot_de_passe ?? '';
 
@@ -47,8 +46,19 @@ switch ($data->action) {
         }
         break;
 
+    case 'find_by_name':
+        $stmt = $db->prepare("SELECT id, nom FROM utilisateurs WHERE LOWER(nom) = LOWER(?) LIMIT 1");
+        $stmt->execute([$data->nom]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($result ?: []);
+        break;
+
+    case 'list':
+        $stmt = $db->query("SELECT id, nom, email FROM utilisateurs");
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        break;
+
     default:
         echo json_encode(["message" => "Action inconnue."]);
 }
-
 ?>

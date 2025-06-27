@@ -35,10 +35,17 @@ class User {
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // 🔍 AJOUT TEMPORAIRE POUR DEBUG :
+            error_log("Mot de passe saisi : " . $this->mot_de_passe);
+            error_log("Hash trouvé : " . $row['mot_de_passe']);
+            error_log("password_verify : " . (password_verify($this->mot_de_passe, $row['mot_de_passe']) ? 'OK' : 'NON'));
+
+
             if (password_verify($this->mot_de_passe, $row['mot_de_passe'])) {
                 $this->id = $row['id'];
                 $this->nom = $row['nom'];
-                $this->role = $row['role']; // ➜ AJOUT ICI
+                $this->role = $row['role'];
                 return true;
             }
         }

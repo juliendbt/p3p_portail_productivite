@@ -175,7 +175,7 @@ if (!userRaw) {
     }
 
     async function afficherCommits() {
-        const res = await fetch("http://localhost/p3p_portail_productivite/backend/index.php/github");
+        const res = await fetch("http://localhost/p3p_portail_productivite/backend/controllers/GitHubController.php");
         const commits = await res.json();
 
         const list = document.getElementById("githubCommits");

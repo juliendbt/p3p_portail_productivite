@@ -28,7 +28,7 @@ if (!userRaw) {
         });
     }
 
-    const API_URL = "http://localhost/p3p_portail_productivite/backend/index.php/goal";
+    const API_URL = "https://p3p.infinityfreeapp.com/index.php/goal";
 
     async function chargerObjectifs() {
         const res = await fetch(API_URL, {

@@ -93,6 +93,15 @@ if (!userRaw) {
         chargerObjectifs();
     };
 
+    document.getElementById("rechercheGoal").addEventListener("input", function () {
+    const terme = this.value.toLowerCase();
+    const lignes = document.querySelectorAll("#tableGoals tbody tr");
+    lignes.forEach(tr => {
+        const texte = tr.textContent.toLowerCase();
+        tr.style.display = texte.includes(terme) ? "" : "none";
+    });
+    });
+
     // Initialisation
     chargerObjectifs();
 }

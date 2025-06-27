@@ -124,3 +124,16 @@ body.bg-dark {
   background-color: #38b6ff;
   color: #23272b;
 }
+
+
+#tableGoals {
+  display: block;
+  max-height: 400px;
+  overflow-y: auto;
+}
+#tableGoals thead th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}

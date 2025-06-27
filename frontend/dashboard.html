@@ -35,7 +35,7 @@
     <div id="weather" class="alert alert-info">Chargement...</div>
 
     <hr>
-    <h4>Commits GitHub</h4>
+    <h4>Derniers Ajouts de l'application</h4>
     <ul id="githubCommits" class="list-group mb-4"></ul>
 
 
@@ -88,8 +88,8 @@
 
     <hr>
     <h4>Mes tâches</h4>
-
-    <div class="d-flex justify-content-end mb-2">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <input type="text" id="rechercheTache" class="form-control w-50 me-2" placeholder="🔍 Rechercher une tâche...">
         <select id="filtreStatut" class="form-select w-auto">
             <option value="toutes">Toutes les tâches</option>
             <option value="à faire">À faire</option>
@@ -97,7 +97,6 @@
             <option value="terminé">Terminé</option>
         </select>
     </div>
-
     <table class="table table-bordered" id="tableTaches">
         <thead>
             <tr>

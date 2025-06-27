@@ -225,6 +225,15 @@ if (!userRaw) {
         if (localStorage.getItem("theme") === "dark") toggleTheme();
     }
 
+    document.getElementById("rechercheTache").addEventListener("input", function () {
+        const terme = this.value.toLowerCase();
+        const lignes = document.querySelectorAll("#tableTaches tbody tr");
+        lignes.forEach(tr => {
+            const texte = tr.textContent.toLowerCase();
+            tr.style.display = texte.includes(terme) ? "" : "none";
+        });
+    });
+
     applyTheme();
     chargerTaches();
     afficherStats();

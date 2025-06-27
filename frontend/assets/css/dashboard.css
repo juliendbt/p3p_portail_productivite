@@ -138,69 +138,154 @@ button.btn-danger {
   form#formTache { padding: 0.5rem; }
 }
 
-/* Dark mode styles */
+/* === Mode Dark amélioré === */
+
 body.bg-dark {
   background-color: #121212;
-  color: #e9ecef;
+  color: #e1e1e1;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .bg-dark main {
-  background-color: #181c1f;
+  background-color: #1e2226;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  transition: background-color 0.3s;
 }
 
-.bg-dark h2, .bg-dark h4, .bg-dark h5 {
-  color: #e9ecef;
+.bg-dark h2, 
+.bg-dark h4, 
+.bg-dark h5 {
+  color: #f0f0f0;
 }
 
 .bg-dark #weather {
-  background-color: #22304a;
-  color: #f8f9fa;
+  background-color: #2a3a53;
+  color: #f0f0f0;
 }
 
 .bg-dark form#formTache {
-  background-color: #23272b;
-  border-color: #444;
+  background-color: #2d333a;
+  border-color: #555;
+  color: #ddd;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.bg-dark form#formTache textarea,
+.bg-dark form#formTache input,
+.bg-dark form#formTache select {
+  background-color: #3a4149;
+  border-color: #555;
+  color: #eee;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .bg-dark #tableTaches {
-  background-color: #23272b;
+  background-color: #2d333a;
+  color: #eee;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.8);
+  transition: background-color 0.3s;
+  display: block;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-.bg-dark .table-bordered th,
-.bg-dark .table-bordered td {
+.bg-dark #tableTaches thead th {
+  position: sticky;
+  top: 0;
+  background-color: #23282e;
+  color: #f8f8f8;
+  border-bottom: 2px solid #444;
+  z-index: 2;
+  transition: background-color 0.3s;
+}
+
+.bg-dark #tableTaches tbody tr:hover {
+  background-color: #3a4150;
+}
+
+.bg-dark #tableTaches th,
+.bg-dark #tableTaches td {
   border-color: #444;
-  color: #e9ecef;
-}
-
-.bg-dark #tableTaches th {
-  background: #1a1d21;
-  color: #fafafa;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .bg-dark .progress {
-  background-color: #2a2a2a;
+  background-color: #333;
+  transition: background-color 0.3s;
 }
 
 .bg-dark .progress-bar {
   background-color: #38b6ff !important;
-  color: #1a1d21;
+  color: #121212;
+  font-weight: 600;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .bg-dark .alert {
-  background-color: #23272b;
-  color: #e3e3e3;
+  background-color: #2d333a;
+  color: #ddd;
+  transition: background-color 0.3s;
 }
 
 .bg-dark .btn {
-  color: #fff;
+  color: #eee;
+  border-color: transparent;
+  transition: color 0.3s;
 }
 
 .bg-dark .btn-outline-primary {
   border-color: #38b6ff;
   color: #38b6ff;
+  transition: all 0.3s;
 }
 
 .bg-dark .btn-outline-primary:hover {
   background-color: #38b6ff;
-  color: #23272b;
+  color: #1a1d21;
+}
+
+.bg-dark select.form-select,
+.bg-dark input.form-control,
+.bg-dark textarea.form-control {
+  background-color: #3a4149;
+  border-color: #555;
+  color: #eee;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.bg-dark ::placeholder {
+  color: #bbb;
+}
+
+/* Scrollbar customisée (Chrome/Edge) */
+.bg-dark #tableTaches::-webkit-scrollbar {
+  width: 8px;
+}
+.bg-dark #tableTaches::-webkit-scrollbar-track {
+  background: #1e2226;
+}
+.bg-dark #tableTaches::-webkit-scrollbar-thumb {
+  background-color: #38b6ff;
+  border-radius: 10px;
+  border: 2px solid #1e2226;
+}
+
+/* Transition pour tout changement */
+* {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+
+#tableTaches {
+    display: block;
+    max-height: 400px;
+    overflow-y: auto;
+}
+#tableTaches thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
 }
